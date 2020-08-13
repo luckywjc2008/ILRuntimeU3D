@@ -700,14 +700,15 @@ namespace ILRuntime.CLR.TypeSystem
             IMethod genericMethod = null;
             if (methods.TryGetValue(name, out lst))
             {
+                int pCnt = param != null ? param.Count : 0;
                 foreach (var i in lst)
                 {
-                    if (i.ParameterCount == param.Count)
+                    if (i.ParameterCount == pCnt)
                     {
                         bool match = true;
                         if (genericArguments != null && i.GenericParameterCount == genericArguments.Length)
                         {
-                            for (int j = 0; j < param.Count; j++)
+                            for (int j = 0; j < pCnt; j++)
                             {
                                 var p = i.Parameters[j].TypeForCLR;
                                 var q = param[j].TypeForCLR;
@@ -747,7 +748,7 @@ namespace ILRuntime.CLR.TypeSystem
                             }
                             if (!match)
                                 continue;
-                            for (int j = 0; j < param.Count; j++)
+                            for (int j = 0; j < pCnt; j++)
                             {
                                 var typeA = param[j].TypeForCLR.IsByRef ? param[j].TypeForCLR.GetElementType() : param[j].TypeForCLR;
                                 var typeB = i.Parameters[j].TypeForCLR.IsByRef ? i.Parameters[j].TypeForCLR.GetElementType() : i.Parameters[j].TypeForCLR;
